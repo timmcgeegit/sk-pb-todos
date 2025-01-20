@@ -8,6 +8,7 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { setTodoContext } from '$lib/pocketbase/todo.svelte';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
+	import LoginForm from '$lib/components/ui/auth/LoginForm.svelte';
 
 	const auth = getAuthContext();
 
@@ -88,25 +89,34 @@
 		</div>
 	</div>
 {:else}
-	<div class="grid min-h-[100dvh] w-full grid-cols-1 lg:grid-cols-2">
-		<div class="flex items-center justify-center bg-muted p-6 lg:p-12">
-			<div class="max-w-md space-y-4">
-				<h1 class="text-3xl font-bold tracking-tight sm:text-4xl">
-					Welcome to our amazing product
-				</h1>
-				<p class="text-muted-foreground">
-					Discover the power of our innovative solution and transform the way you work.
-				</p>
-			</div>
-		</div>
-		<div class="flex items-center justify-center bg-background p-6 lg:p-12">
-			<div class="w-full max-w-md space-y-4">
-				<h2 class="text-2xl font-bold">Login</h2>
-				<div class="space-y-4">
-					<Button class="w-full" onclick={signInWithDiscord}>Sign in with Discord</Button>
-					<Button class="w-full" onclick={signInWithGithub}>Sign in with Github</Button>
-				</div>
-			</div>
-		</div>
+<div class="grid min-h-[100dvh] w-full grid-cols-1 lg:grid-cols-2">
+  <div class="flex items-center justify-center bg-muted p-6 lg:p-12">
+	<div class="max-w-md space-y-4">
+	  <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">
+		Welcome to our amazing product
+	  </h1>
+	  <p class="text-muted-foreground">
+		Discover the power of our innovative solution and transform the way you work.
+	  </p>
 	</div>
+  </div>
+  <div class="flex items-center justify-center bg-background p-6 lg:p-12">
+	<div class="w-full max-w-md space-y-4">
+	  <h2 class="text-2xl font-bold">Login</h2>
+	  <LoginForm />
+	  <div class="relative">
+		<div class="absolute inset-0 flex items-center">
+		  <span class="w-full border-t" ></span>
+		</div>
+		<div class="relative flex justify-center text-xs uppercase">
+		  <span class="bg-background px-2 text-muted-foreground">Or continue with</span>
+		</div>
+	  </div>
+	  <div class="space-y-4">
+		<Button class="w-full" onclick={signInWithDiscord}>Sign in with Discord</Button>
+		<Button class="w-full" onclick={signInWithGithub}>Sign in with Github</Button>
+	  </div>
+	</div>
+  </div>
+</div>
 {/if}

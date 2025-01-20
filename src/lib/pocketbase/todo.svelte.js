@@ -12,7 +12,11 @@ class TodoStore {
 	}
 
 	async createTodo(name) {
-		await pb.collection('todos').create({ name, isDone: false });
+		await pb.collection('todos').create({ 
+			name, 
+			isDone: false,
+			user: pb.authStore.model.id
+		});
 		this.todos = await pb.collection('todos').getFullList();
 	}
 

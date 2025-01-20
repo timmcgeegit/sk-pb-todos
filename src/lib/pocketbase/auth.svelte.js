@@ -6,12 +6,20 @@ class AuthStore {
 	isSynced = $state(false);
 
 	constructor() {
-		// runs on mount
-		$effect(() => {
-			if (pb.authStore.isValid) {
-				this.user = pb.authStore.model;
-			}
+		// Set isSynced immediately if we have a valid auth
+		if (pb.authStore.isValid) {
+			this.user = pb.authStore.model;
 			this.isSynced = true;
+		} else {
+			// If no valid auth, we can still mark as synced
+			this.isSynced = true;
+		}
+
+		// Watch for auth changes
+		$effect(() => {
+			pb.authStore.onChange((token, model) => {
+				this.user = model;
+			});
 		});
 	}
 
@@ -21,6 +29,21 @@ class AuthStore {
 
 	async signInWithGithub() {
 		this.user = (await pb.collection('users').authWithOAuth2({ provider: 'github' })).record;
+	}
+
+	async signInWithEmail(email, password) {
+		const authData = await pb.collection('users').authWithPassword(email, password);
+		this.user = authData.record;
+	}
+
+	async signUp(email, password) {
+		const user = await pb.collection('users').create({
+			email,
+			password,
+			passwordConfirm: password
+		});
+		await this.signInWithEmail(email, password);
+		return user;
 	}
 
 	logout() {
